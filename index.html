@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Phaladi Pizza Cart</title>
+    <script src="//unpkg.com/alpinejs" defer></script>
+    <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="pizza.js"></script>
+  </head>
+  <body x-data="pizzaCart" style="background-color: rgb(234, 85, 202);">
+    <div class="container">
+      <h1 x-text="title"></h1>
+      <div>
+        username: <input x-model="username" type="text">
+        <button x-on:click="login" x-show="!cartId">login</button>
+        <button x-on:click="logout" x-show="username && cartId ">logout</button>
+        </div>
+        <div x-cloak x-show="cartId">
+        cart code: <span x-text="cartId"></span>
+        </div>
+      <div class="cart">
+        <!-- <div>Cart code: <span x-text="cartId"></span></div> -->
+        <div>Username: <span x-text="username"></span></div>
+        <div>
+          <div x-for="pizza in pizzas"></div>
+        </div>
+      </div>
+      <!-- <div x-show="cartTotal > 0">  -->
+      <!-- <h2>Your Cart</h2> -->
+      <div class="message" x-text="message">Message here</div>
+      <table class="table">
+        <tr>
+          <th>Flavour</th>
+          <th>Size</th>
+          <th>Price</th>
+          <th>Qty</th>
+          <th>Total</th>
+        </tr>
+        <template x-for="pizza in cartPizzas">
+          <tr>
+            
+            <td x-text="pizza.flavour"></td>
+            <td x-text="pizza.size"></td>
+            <td x-text="pizza.price"></td>
+            <td>
+              <button x-on:click="addPizzaToCart(pizza.id)">+</button>
+              <span x-text="pizza.qty"></span>
+              <button x-on:click="removePizzaFromCart(pizza.id)">-</button>
+            </td>
+            <td x-text="pizza.total"></td>
+          </tr>
+        </template>
+        <tr>
+          <td colspan="4">Total</td>
+          <td>R <span x-text="cartTotal"></span></td>
+        </tr>
+        <tr>
+          <td colspan="2">Pay now</td>
+          <td>
+            <input x-model="paymentAmount" type="text" />
+          </td>
+          <td><button x-on:click="payForCart()">Pay</button></td>
+        </tr>
+      </table>
+    </div>
+    <div class="pizzas">
+      <h2>Pizza-Menu</h2>
+      <section style="background-color: rgb(248, 163, 203)">
+        <template x-for="pizza in pizzas">
+          <div class="d-flex flex-row mb-5">
+            <img src="download.jpg" width="122px" class="mr-2" />
+            <div class="d-flex flex-column justify-content-between text-end">
+              <h2><b> <span class="mr-4 " x-text="pizza.flavour"></span></b></h2>
+              <b><span class="mr-4" x-text="pizza.size"></span></b>
+              <span x-text="pizza.type"></span>
+            </div>
+            <div class="ml-auto d-flex flex-column justify-content-between">
+              <strong> R<span x-text="pizza.price"></span> </strong>
+              <button
+                class="btn btn-warning"
+                x-on:click="addPizzaToCart(pizza.id)"
+              >
+                Add to cart
+              </button>
+            </div>
+          </div>
+        </template>
+      </section>
+    </div>
+  </body>
+</html>
